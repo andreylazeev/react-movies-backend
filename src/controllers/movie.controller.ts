@@ -18,14 +18,17 @@ class MovieController {
   async writeMovie(req: Request, res: Response) {
     try {
       const { id } = req.body.user
-      const { nameRu, length, year, cover, filmId } = req.body
+      const { nameRu, filmLength, viewedLength, year, cover, filmId } = req.body
 
       const movie = await prisma.movie.create({
         data: {
           nameRu,
           year,
           cover,
-          length,
+          filmLength,
+          isFavorite: true,
+          updatedAt: Date.now(),
+          viewedLength,
           filmId,
           user: { connect: { id } }
         }
@@ -38,7 +41,7 @@ class MovieController {
 
   async updateMovie(req: Request, res: Response) {
     try {
-      const { nameRu, length, year, cover, filmId } = req.body
+      const { nameRu, filmLength, isFavorite, viewedLength, year, cover, filmId } = req.body
 
       const movie = await prisma.movie.update({
         where: {
@@ -46,10 +49,13 @@ class MovieController {
         },
         data: {
           nameRu,
-          length,
+          filmLength,
           year,
+          isFavorite,
+          viewedLength,
           cover,
-          filmId
+          filmId,
+          updatedAt: Date.now(),
         }
       })
       res.json(movie)
