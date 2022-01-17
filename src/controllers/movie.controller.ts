@@ -18,11 +18,13 @@ class MovieController {
   async writeMovie(req: Request, res: Response) {
     try {
       const { id } = req.body.user
-      const { nameRu, filmLength, viewedLength, year, cover, filmId } = req.body
+      const { nameRu, nameEn, nameOriginal, filmLength, viewedLength, year, cover, filmId } = req.body
 
       const movie = await prisma.movie.create({
         data: {
           nameRu,
+          nameEn,
+          nameOriginal,
           year,
           cover,
           filmLength,
@@ -35,6 +37,7 @@ class MovieController {
       })
       res.json(movie)
     } catch (e) {
+      console.log(e);
       res.status(400).json({ message: e })
     }
   }
@@ -71,7 +74,9 @@ class MovieController {
         where: { id },
         include: { movies: true }
       })
-      res.json(userWithMovies)
+      const {password, ...result} = JSON.parse(JSON.stringify(userWithMovies))
+
+      res.json(result)
     } catch (e) {
       res.status(400).json({ message: 'Login error' })
     }
