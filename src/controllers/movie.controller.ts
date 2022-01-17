@@ -18,12 +18,13 @@ class MovieController {
   async writeMovie(req: Request, res: Response) {
     try {
       const { id } = req.body.user
-      const { nameRu, nameEn, nameOriginal, filmLength, viewedLength, year, cover, filmId } = req.body
+      const { nameRu, nameEn, countries, nameOriginal, filmLength, viewedLength, year, cover, filmId } = req.body
 
       const movie = await prisma.movie.create({
         data: {
           nameRu,
           nameEn,
+          countries,
           nameOriginal,
           year,
           cover,
