@@ -45,25 +45,21 @@ class MovieController {
 
   async updateMovie(req: Request, res: Response) {
     try {
-      const { nameRu, filmLength, isFavorite, viewedLength, year, cover, filmId } = req.body
+      const { id, isFavorite } = req.body
 
       const movie = await prisma.movie.update({
         where: {
-          filmId
+          id
         },
         data: {
-          nameRu,
-          filmLength,
-          year,
           isFavorite,
-          viewedLength,
-          cover,
-          filmId,
           updatedAt: Date.now(),
         }
       })
       res.json(movie)
     } catch (e) {
+      console.log(e);
+      
       res.status(400).json({ message: e })
     }
   }
