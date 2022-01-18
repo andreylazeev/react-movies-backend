@@ -24,7 +24,7 @@ model Movie {
   filmId           Int       @unique
   filmLength       Int
   isFavorite       Boolean   @default(false)
-  viewedLength     Int       @default(0)
+  viewedLength     Float       @default(0)
   updatedAt        Int       
   countries        String[]
   user             User      @relation(fields: [userId], references: [id])
