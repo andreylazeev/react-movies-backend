@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
     "prisma:generate": "prisma generate --schema=prisma/schema.prisma"
   },
   "keywords": [],
@@ -28,6 +29,7 @@
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^17.0.5",
+    "nodemon": "^2.0.15",
     "prisma": "^3.7.0"
   }
 }
