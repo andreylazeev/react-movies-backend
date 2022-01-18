@@ -21,7 +21,7 @@ model Movie {
   year             Int?
   cover            String?
   coverPreview     String?
-  filmId           Int       @unique
+  filmId           Int       
   filmLength       Int
   isFavorite       Boolean   @default(false)
   viewedLength     Float       @default(0)

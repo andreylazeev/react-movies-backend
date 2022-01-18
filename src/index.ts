@@ -57,13 +57,15 @@ io.on('connection', (socket) => {
         uniqueId: value.uniqueId
       }
 
-      const candidate = await prisma.movie.findUnique({
+      let candidate: any = await prisma.movie.findUnique({
         where: {
-          filmId: parsedValue.id
+          id: parsedValue.uniqueId
         }
-      })
+      }).catch(() => candidate = false)
       if (candidate) {
         try {
+          console.log('update on db')
+
           await prisma.movie.update({
             where: {
               id: parsedValue.uniqueId
@@ -74,10 +76,12 @@ io.on('connection', (socket) => {
             }
           })
         } catch (e) {
-          console.log(e)
+          return
         }
       } else {
         try {
+          console.log('add to db')
+
           await prisma.movie.create({
             data: {
               nameRu,
@@ -95,11 +99,12 @@ io.on('connection', (socket) => {
               user: { connect: { id: parsedValue.userId } }
             }
           })
+          socket.emit('updateData')
         } catch (e) {
           console.log(e)
         }
       }
-    }, 5000)
+    }, 10000)
   )
 })
 
