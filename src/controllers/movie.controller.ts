@@ -18,18 +18,18 @@ class MovieController {
   async writeMovie(req: Request, res: Response) {
     try {
       const { id } = req.body.user
-      const { nameRu, nameEn, countries, nameOriginal, filmLength, viewedLength, year, cover, filmId } = req.body
+      const { nameRu, nameEn,coverPreview, isFavorite, nameOriginal, filmLength, viewedLength, year, cover, filmId } = req.body
 
       const movie = await prisma.movie.create({
         data: {
           nameRu,
           nameEn,
-          countries,
           nameOriginal,
           year,
           cover,
+          coverPreview,
           filmLength,
-          isFavorite: true,
+          isFavorite,
           updatedAt: Date.now(),
           viewedLength,
           filmId,
@@ -45,7 +45,7 @@ class MovieController {
 
   async updateMovie(req: Request, res: Response) {
     try {
-      const { id, isFavorite } = req.body
+      const { id, isFavorite, viewedLength } = req.body
 
       const movie = await prisma.movie.update({
         where: {
@@ -53,8 +53,26 @@ class MovieController {
         },
         data: {
           isFavorite,
+          viewedLength,
           updatedAt: Date.now(),
         }
+      })
+      res.json(movie)
+    } catch (e) {
+      console.log(e);
+      
+      res.status(400).json({ message: e })
+    }
+  }
+
+  async deleteMovie(req: Request, res: Response) {
+    try {
+      const { id } = req.params
+
+      const movie = await prisma.movie.delete({
+        where: {
+          id
+        },
       })
       res.json(movie)
     } catch (e) {
@@ -73,7 +91,7 @@ class MovieController {
       })
       const {password, ...result} = JSON.parse(JSON.stringify(userWithMovies))
 
-      res.json(result)
+      res.json({...result, movies: result.movies.reverse()})
     } catch (e) {
       res.status(400).json({ message: 'Login error' })
     }
