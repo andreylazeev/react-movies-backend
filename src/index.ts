@@ -15,4 +15,4 @@ app.get('/', (req: Request, res: Response) => {
   res.send('hello')
 })
 
-server.listen(5000, () => console.log('server started'))
+server.listen(process.env.PORT || 5000, () => console.log('server started'))
